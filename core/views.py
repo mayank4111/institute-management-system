@@ -15,7 +15,7 @@ def home(request):
     context = {
         'courses': courses,
         'testimonials': testimonials,
-        'announcements': announcement,
+        'announcements': announcements,
     }
     return render(request, 'core/home.html', context)
 
