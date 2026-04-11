@@ -1,3 +1,7 @@
 from django.contrib import admin
+from .models import Student, Admission, Payment
 
-# Register your models here.
+# Simple registration
+admin.site.register(Student)
+admin.site.register(Admission)
+admin.site.register(Payment)
