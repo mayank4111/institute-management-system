@@ -1,0 +1,52 @@
+{% extends 'admin_panel/admin_base.html' %}
+{% block title %}View Message{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h4><i class="fas fa-envelope"></i> Message Details</h4>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label class="fw-bold">Name:</label>
+                <p>{{ message.name }}</p>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label class="fw-bold">Email:</label>
+                <p><a href="mailto:{{ message.email }}">{{ message.email }}</a></p>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label class="fw-bold">Phone:</label>
+                <p>{{ message.phone }}</p>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label class="fw-bold">Date:</label>
+                <p>{{ message.created_at|date:"Y-m-d H:i:s" }}</p>
+            </div>
+            <div class="col-12 mb-3">
+                <label class="fw-bold">Subject:</label>
+                <p>{{ message.subject }}</p>
+            </div>
+            <div class="col-12 mb-3">
+                <label class="fw-bold">Message:</label>
+                <div class="border p-3 bg-light rounded">
+                    {{ message.message|linebreaks }}
+                </div>
+            </div>
+        </div>
+        
+        <div class="mt-3">
+            <a href="{% url 'manage_messages' %}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Back to Messages
+            </a>
+            <a href="mailto:{{ message.email }}" class="btn btn-primary">
+                <i class="fas fa-reply"></i> Reply via Email
+            </a>
+            <a href="{% url 'delete_message' message.id %}" class="btn btn-danger">
+                <i class="fas fa-trash"></i> Delete Message
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

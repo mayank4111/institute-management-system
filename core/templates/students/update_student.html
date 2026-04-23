@@ -1,0 +1,367 @@
+{% extends 'admin_panel/admin_base.html' %}
+{% load static %}
+
+{% block title %}Update Student - {{ student.name }}{% endblock %}
+
+{% block extra_css %}
+<style>
+    .form-section {
+        background: white;
+        border-radius: 10px;
+        padding: 25px;
+        margin-bottom: 25px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+    
+    .form-section h5 {
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid #667eea;
+        display: inline-block;
+    }
+    
+    .preview-image {
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+        border-radius: 50%;
+        margin-bottom: 10px;
+    }
+    
+    .current-photo {
+        text-align: center;
+        padding: 15px;
+        background: #f8f9fa;
+        border-radius: 10px;
+        margin-bottom: 15px;
+    }
+    
+    .status-badge {
+        padding: 8px 15px;
+        border-radius: 20px;
+        font-weight: 500;
+    }
+    
+    .status-enrolled { background: #d4edda; color: #155724; }
+    .status-pending { background: #fff3cd; color: #856404; }
+    .status-completed { background: #cce5ff; color: #004085; }
+    .status-cancelled { background: #f8d7da; color: #721c24; }
+    
+    .form-control:focus, .form-select:focus {
+        border-color: #667eea;
+        box-shadow: 0 0 0 0.2rem rgba(102,126,234,0.25);
+    }
+    
+    .info-card {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border-radius: 10px;
+        padding: 20px;
+        margin-bottom: 20px;
+    }
+    
+    .info-card i {
+        font-size: 2rem;
+        margin-bottom: 10px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center">
+                <h2>
+                    <i class="fas fa-user-edit"></i> Update Student
+                    <small class="text-muted">- {{ student.name }}</small>
+                </h2>
+                <div>
+                    <a href="{% url 'student_detail' student.id %}" class="btn btn-info">
+                        <i class="fas fa-eye"></i> View Details
+                    </a>
+                    <a href="{% url 'student_list' %}" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Back to List
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <!-- Student Info Card -->
+            <div class="info-card text-center">
+                <i class="fas fa-user-graduate"></i>
+                <h4 class="mt-2">{{ student.name }}</h4>
+                <p class="mb-0">
+                    <i class="fas fa-id-card"></i> Enrollment: {{ student.enrollment_number|default:"Not assigned" }}
+                </p>
+                <p class="mb-0">
+                    <i class="fas fa-calendar"></i> Joined: {{ student.admission_date|date:"d M Y" }}
+                </p>
+            </div>
+            
+            <!-- Current Photo -->
+            {% if student.photo %}
+            <div class="card border-0 shadow-sm">
+                <div class="card-body text-center">
+                    <h5><i class="fas fa-camera"></i> Current Photo</h5>
+                    <img src="{{ student.photo.url }}" class="preview-image" alt="{{ student.name }}">
+                    <p class="text-muted small mt-2">Current profile photo</p>
+                </div>
+            </div>
+            {% endif %}
+            
+            <!-- Quick Stats -->
+            <div class="card border-0 shadow-sm mt-3">
+                <div class="card-body">
+                    <h5><i class="fas fa-chart-line"></i> Quick Stats</h5>
+                    <hr>
+                    <div class="mb-2">
+                        <strong>Course:</strong> {{ student.course.name|default:"Not assigned" }}
+                    </div>
+                    <div class="mb-2">
+                        <strong>Status:</strong>
+                        <span class="status-badge status-{{ student.status }}">
+                            {{ student.get_status_display }}
+                        </span>
+                    </div>
+                    <div class="mb-2">
+                        <strong>Last Updated:</strong> {% now "d M Y H:i" %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-8">
+            <form method="post" enctype="multipart/form-data" id="updateForm">
+                {% csrf_token %}
+                
+                <!-- Personal Information -->
+                <div class="form-section">
+                    <h5><i class="fas fa-user"></i> Personal Information</h5>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Full Name *</label>
+                            <input type="text" name="name" class="form-control" value="{{ student.name }}" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Email Address *</label>
+                            <input type="email" name="email" class="form-control" value="{{ student.email }}" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Phone Number *</label>
+                            <input type="tel" name="phone" class="form-control" value="{{ student.phone }}" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Gender *</label>
+                            <select name="gender" class="form-select" required>
+                                <option value="">Select Gender</option>
+                                <option value="male" {% if student.gender == 'male' %}selected{% endif %}>Male</option>
+                                <option value="female" {% if student.gender == 'female' %}selected{% endif %}>Female</option>
+                                <option value="other" {% if student.gender == 'other' %}selected{% endif %}>Other</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Date of Birth *</label>
+                            <input type="date" name="date_of_birth" class="form-control" value="{{ student.date_of_birth|date:'Y-m-d' }}" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Highest Qualification *</label>
+                            <input type="text" name="qualification" class="form-control" value="{{ student.qualification }}" required>
+                        </div>
+                        <div class="col-12 mb-3">
+                            <label class="form-label">Address *</label>
+                            <textarea name="address" rows="3" class="form-control" required>{{ student.address }}</textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Academic Information -->
+                <div class="form-section">
+                    <h5><i class="fas fa-graduation-cap"></i> Academic Information</h5>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Course *</label>
+                            <select name="course" class="form-select" id="courseSelect" required>
+                                <option value="">Select Course</option>
+                                {% for course in courses %}
+                                    <option value="{{ course.id }}" 
+                                            data-fee="{{ course.fee }}"
+                                            {% if student.course.id == course.id %}selected{% endif %}>
+                                        {{ course.name }} - {{ course.duration }} (₹{{ course.fee }})
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Status *</label>
+                            <select name="status" class="form-select" required>
+                                <option value="pending" {% if student.status == 'pending' %}selected{% endif %}>Pending</option>
+                                <option value="enrolled" {% if student.status == 'enrolled' %}selected{% endif %}>Enrolled</option>
+                                <option value="completed" {% if student.status == 'completed' %}selected{% endif %}>Completed</option>
+                                <option value="cancelled" {% if student.status == 'cancelled' %}selected{% endif %}>Cancelled</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <!-- Course Details Preview -->
+                    <div class="alert alert-info mt-3" id="courseDetails" style="display: none;">
+                        <i class="fas fa-info-circle"></i>
+                        <strong>Course Details:</strong>
+                        <span id="courseDuration"></span> | 
+                        Fee: ₹<span id="courseFee"></span>
+                    </div>
+                </div>
+
+                <!-- Photo Upload -->
+                <div class="form-section">
+                    <h5><i class="fas fa-camera"></i> Profile Photo</h5>
+                    <div class="row">
+                        <div class="col-12">
+                            <label class="form-label">Update Photo</label>
+                            <input type="file" name="photo" class="form-control" accept="image/*" id="photoInput">
+                            <small class="text-muted">Leave empty to keep current photo. Max size: 2MB</small>
+                            <div id="photoPreview" class="mt-2" style="display: none;">
+                                <img id="previewImage" src="#" alt="Preview" style="max-width: 150px; border-radius: 10px;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Notes Section -->
+                <div class="form-section">
+                    <h5><i class="fas fa-sticky-note"></i> Additional Notes</h5>
+                    <div class="row">
+                        <div class="col-12">
+                            <label class="form-label">Admin Notes (Internal)</label>
+                            <textarea name="notes" rows="3" class="form-control" placeholder="Add any internal notes about the student..."></textarea>
+                            <small class="text-muted">These notes are only visible to admins</small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="d-flex justify-content-between align-items-center mt-4">
+                    <div>
+                        <a href="{% url 'delete_student' student.id %}" class="btn btn-danger">
+                            <i class="fas fa-trash"></i> Delete Student
+                        </a>
+                    </div>
+                    <div>
+                        <a href="{% url 'student_list' %}" class="btn btn-secondary me-2">
+                            <i class="fas fa-times"></i> Cancel
+                        </a>
+                        <button type="submit" class="btn btn-primary" id="submitBtn">
+                            <i class="fas fa-save"></i> Update Student
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% block extra_js %}
+<script>
+    // Course selection handler
+    const courseSelect = document.getElementById('courseSelect');
+    const courseDetails = document.getElementById('courseDetails');
+    const courseDuration = document.getElementById('courseDuration');
+    const courseFee = document.getElementById('courseFee');
+    
+    function updateCourseDetails() {
+        const selectedOption = courseSelect.options[courseSelect.selectedIndex];
+        if (selectedOption && selectedOption.value) {
+            const duration = selectedOption.text.split(' - ')[1]?.split(' (')[0] || 'N/A';
+            const fee = selectedOption.getAttribute('data-fee') || '0';
+            courseDuration.textContent = duration;
+            courseFee.textContent = fee;
+            courseDetails.style.display = 'block';
+        } else {
+            courseDetails.style.display = 'none';
+        }
+    }
+    
+    courseSelect.addEventListener('change', updateCourseDetails);
+    
+    // Initial call
+    if (courseSelect.value) {
+        updateCourseDetails();
+    }
+    
+    // Photo preview
+    const photoInput = document.getElementById('photoInput');
+    const photoPreview = document.getElementById('photoPreview');
+    const previewImage = document.getElementById('previewImage');
+    
+    photoInput.addEventListener('change', function() {
+        const file = this.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                previewImage.src = e.target.result;
+                photoPreview.style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+        } else {
+            photoPreview.style.display = 'none';
+        }
+    });
+    
+    // Form validation
+    document.getElementById('updateForm').addEventListener('submit', function(e) {
+        const name = document.querySelector('[name="name"]').value;
+        const email = document.querySelector('[name="email"]').value;
+        const phone = document.querySelector('[name="phone"]').value;
+        
+        if (!name || !email || !phone) {
+            e.preventDefault();
+            alert('Please fill in all required fields.');
+            return false;
+        }
+        
+        // Email validation
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            e.preventDefault();
+            alert('Please enter a valid email address.');
+            return false;
+        }
+        
+        // Phone validation (10 digits)
+        const phoneRegex = /^\d{10}$/;
+        if (!phoneRegex.test(phone)) {
+            e.preventDefault();
+            alert('Please enter a valid 10-digit phone number.');
+            return false;
+        }
+        
+        if (confirm('Are you sure you want to update this student\'s information?')) {
+            document.getElementById('submitBtn').innerHTML = '<i class="fas fa-spinner fa-spin"></i> Updating...';
+            document.getElementById('submitBtn').disabled = true;
+            return true;
+        }
+        e.preventDefault();
+        return false;
+    });
+    
+    // Warn before leaving
+    let formChanged = false;
+    document.querySelectorAll('#updateForm input, #updateForm select, #updateForm textarea').forEach(input => {
+        input.addEventListener('change', function() {
+            formChanged = true;
+        });
+    });
+    
+    window.addEventListener('beforeunload', function(e) {
+        if (formChanged) {
+            e.preventDefault();
+            e.returnValue = 'You have unsaved changes. Are you sure you want to leave?';
+            return e.returnValue;
+        }
+    });
+</script>
+{% endblock %}
+{% endblock %}

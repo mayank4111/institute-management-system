@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Student Login{% endblock %}
+
+{% block content %}
+<div class="container mt-5 pt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-5">
+            <div class="card border-0 shadow-lg" data-aos="fade-up">
+                <div class="card-header bg-primary text-white text-center py-4">
+                    <i class="fas fa-user-graduate fa-3x mb-2"></i>
+                    <h3 class="mb-0">Student Login</h3>
+                    <p class="mb-0">Access your student dashboard</p>
+                </div>
+                <div class="card-body p-4">
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label class="form-label">Email Address</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                                <input type="email" name="email" class="form-control" placeholder="Enter your email" required>
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label">Enrollment Number</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-id-card"></i></span>
+                                <input type="text" name="enrollment_number" class="form-control" placeholder="Enter enrollment number" required>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100 py-2">
+                            <i class="fas fa-sign-in-alt"></i> Login
+                        </button>
+                    </form>
+                    <hr class="my-4">
+                    <div class="text-center">
+                        <p class="mb-2">Don't have an account?</p>
+                        <a href="/students/admission/" class="btn btn-outline-primary">
+                            <i class="fas fa-edit"></i> Apply for Admission
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center mt-3">
+                <small class="text-muted">
+                    <i class="fas fa-question-circle"></i> Need help? 
+                    <a href="/contact/">Contact Support</a>
+                </small>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

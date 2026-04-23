@@ -1,0 +1,370 @@
+{% extends 'admin_panel/admin_base.html' %}
+{% load static %}
+
+{% block title %}Delete Student - {{ student.name }}{% endblock %}
+
+{% block extra_css %}
+<style>
+    .delete-container {
+        max-width: 600px;
+        margin: 0 auto;
+    }
+    
+    .warning-card {
+        background: linear-gradient(135deg, #f56565 0%, #c53030 100%);
+        color: white;
+        border-radius: 15px;
+        padding: 30px;
+        text-align: center;
+        margin-bottom: 30px;
+        animation: shake 0.5s ease;
+    }
+    
+    @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        25% { transform: translateX(-5px); }
+        75% { transform: translateX(5px); }
+    }
+    
+    .warning-icon {
+        font-size: 4rem;
+        margin-bottom: 20px;
+    }
+    
+    .student-card {
+        background: white;
+        border-radius: 15px;
+        padding: 25px;
+        margin-bottom: 25px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    
+    .student-photo {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-bottom: 15px;
+        border: 3px solid #f56565;
+    }
+    
+    .info-row {
+        padding: 10px;
+        border-bottom: 1px solid #e0e0e0;
+        display: flex;
+        justify-content: space-between;
+    }
+    
+    .info-row:last-child {
+        border-bottom: none;
+    }
+    
+    .info-label {
+        font-weight: 600;
+        color: #555;
+    }
+    
+    .info-value {
+        color: #333;
+    }
+    
+    .consequences-list {
+        background: #f8f9fa;
+        border-radius: 10px;
+        padding: 20px;
+        margin: 20px 0;
+    }
+    
+    .consequences-list li {
+        margin-bottom: 10px;
+        color: #721c24;
+    }
+    
+    .consequences-list i {
+        margin-right: 10px;
+    }
+    
+    .action-buttons {
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+    }
+    
+    .btn-delete {
+        background: #dc3545;
+        color: white;
+        padding: 12px 30px;
+        border-radius: 8px;
+        border: none;
+        font-weight: 600;
+        transition: all 0.3s;
+    }
+    
+    .btn-delete:hover {
+        background: #c82333;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(220,53,69,0.3);
+    }
+    
+    .btn-cancel {
+        background: #6c757d;
+        color: white;
+        padding: 12px 30px;
+        border-radius: 8px;
+        text-decoration: none;
+        transition: all 0.3s;
+        display: inline-block;
+    }
+    
+    .btn-cancel:hover {
+        background: #5a6268;
+        transform: translateY(-2px);
+        color: white;
+    }
+    
+    .checkbox-container {
+        background: #fff3cd;
+        border: 1px solid #ffc107;
+        border-radius: 10px;
+        padding: 15px;
+        margin: 20px 0;
+    }
+    
+    .checkbox-container input {
+        margin-right: 10px;
+    }
+    
+    .fade-in {
+        animation: fadeIn 0.5s ease;
+    }
+    
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="delete-container fade-in">
+        <!-- Warning Header -->
+        <div class="warning-card">
+            <div class="warning-icon">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <h2 class="mb-3">Delete Student Record</h2>
+            <p class="mb-0">This action cannot be undone. Please review the information below carefully.</p>
+        </div>
+        
+        <!-- Student Information Card -->
+        <div class="student-card text-center">
+            {% if student.photo %}
+                <img src="{{ student.photo.url }}" class="student-photo" alt="{{ student.name }}">
+            {% else %}
+                <i class="fas fa-user-circle fa-5x text-muted mb-3"></i>
+            {% endif %}
+            
+            <h3 class="mb-1">{{ student.name }}</h3>
+            <p class="text-muted mb-3">Student ID: {{ student.id }}</p>
+            
+            <div class="text-start mt-4">
+                <div class="info-row">
+                    <span class="info-label"><i class="fas fa-envelope"></i> Email:</span>
+                    <span class="info-value">{{ student.email }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label"><i class="fas fa-phone"></i> Phone:</span>
+                    <span class="info-value">{{ student.phone }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label"><i class="fas fa-book"></i> Course:</span>
+                    <span class="info-value">{{ student.course.name|default:"Not assigned" }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label"><i class="fas fa-calendar"></i> Admission Date:</span>
+                    <span class="info-value">{{ student.admission_date|date:"d M Y" }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label"><i class="fas fa-tag"></i> Status:</span>
+                    <span class="info-value">
+                        <span class="badge bg-{% if student.status == 'enrolled' %}success{% elif student.status == 'pending' %}warning{% else %}secondary{% endif %}">
+                            {{ student.get_status_display }}
+                        </span>
+                    </span>
+                </div>
+                {% if student.enrollment_number %}
+                <div class="info-row">
+                    <span class="info-label"><i class="fas fa-id-card"></i> Enrollment:</span>
+                    <span class="info-value">{{ student.enrollment_number }}</span>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        
+        <!-- Consequences -->
+        <div class="consequences-list">
+            <h5><i class="fas fa-exclamation-circle"></i> What will be deleted?</h5>
+            <ul class="list-unstyled mt-3">
+                <li><i class="fas fa-user-times"></i> Student personal information</li>
+                <li><i class="fas fa-book"></i> Course enrollment records</li>
+                {% if admission %}
+                <li><i class="fas fa-money-bill"></i> Payment history ({{ payments.count }} payments)</li>
+                <li><i class="fas fa-file-alt"></i> Admission records</li>
+                {% endif %}
+                <li><i class="fas fa-chart-line"></i> All academic records</li>
+                <li><i class="fas fa-camera"></i> Profile photo and documents</li>
+            </ul>
+            <div class="alert alert-danger mt-3 mb-0">
+                <i class="fas fa-database"></i> <strong>Data Loss Warning:</strong> This will permanently delete all data associated with this student. This action cannot be reversed.
+            </div>
+        </div>
+        
+        <!-- Confirmation Form -->
+        <form method="post" id="deleteForm">
+            {% csrf_token %}
+            
+            <div class="checkbox-container">
+                <input type="checkbox" id="confirmCheckbox" required>
+                <label for="confirmCheckbox" class="fw-bold">
+                    I understand that this action is permanent and cannot be undone.
+                </label>
+            </div>
+            
+            <div class="checkbox-container">
+                <input type="checkbox" id="backupCheckbox" required>
+                <label for="backupCheckbox" class="fw-bold">
+                    I have taken a backup of important data if needed.
+                </label>
+            </div>
+            
+            <div class="mb-3">
+                <label class="form-label">Type <strong class="text-danger">{{ student.name }}</strong> to confirm:</label>
+                <input type="text" id="confirmName" class="form-control" placeholder="Enter student name to confirm" required>
+                <small class="text-muted">Please type the student's full name to confirm deletion</small>
+            </div>
+            
+            <div class="action-buttons mt-4">
+                <a href="{% url 'student_detail' student.id %}" class="btn-cancel">
+                    <i class="fas fa-arrow-left"></i> Cancel
+                </a>
+                <button type="submit" class="btn-delete" id="deleteBtn" disabled>
+                    <i class="fas fa-trash-alt"></i> Permanently Delete
+                </button>
+            </div>
+        </form>
+        
+        <!-- Additional Info -->
+        <div class="alert alert-info mt-4 text-center">
+            <i class="fas fa-question-circle"></i>
+            <strong>Need help?</strong> Contact the system administrator if you're unsure about deleting this record.
+        </div>
+    </div>
+</div>
+
+{% block extra_js %}
+<script>
+    const confirmName = document.getElementById('confirmName');
+    const confirmCheckbox = document.getElementById('confirmCheckbox');
+    const backupCheckbox = document.getElementById('backupCheckbox');
+    const deleteBtn = document.getElementById('deleteBtn');
+    const studentName = "{{ student.name }}";
+    
+    function validateForm() {
+        const nameMatches = confirmName.value.trim() === studentName;
+        const checkboxesChecked = confirmCheckbox.checked && backupCheckbox.checked;
+        
+        deleteBtn.disabled = !(nameMatches && checkboxesChecked);
+        
+        if (nameMatches && checkboxesChecked) {
+            deleteBtn.style.opacity = '1';
+            deleteBtn.style.cursor = 'pointer';
+        } else {
+            deleteBtn.style.opacity = '0.5';
+            deleteBtn.style.cursor = 'not-allowed';
+        }
+    }
+    
+    confirmName.addEventListener('input', validateForm);
+    confirmCheckbox.addEventListener('change', validateForm);
+    backupCheckbox.addEventListener('change', validateForm);
+    
+    // Form submission with confirmation
+    document.getElementById('deleteForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        if (!validateForm()) {
+            alert('Please complete all confirmation steps.');
+            return false;
+        }
+        
+        // Double confirmation dialog
+        const userConfirmed = confirm(
+            '⚠️ WARNING: This action is PERMANENT!\n\n' +
+            'You are about to delete ALL data for "' + studentName + '".\n\n' +
+            'This includes:\n' +
+            '- Personal information\n' +
+            '- Course enrollment\n' +
+            '- Payment history\n' +
+            '- All academic records\n\n' +
+            'Are you ABSOLUTELY sure you want to proceed?'
+        );
+        
+        if (userConfirmed) {
+            // Final confirmation
+            const finalConfirm = confirm(
+                'FINAL WARNING:\n\n' +
+                'This is your last chance to cancel.\n' +
+                'Once deleted, this data cannot be recovered.\n\n' +
+                'Click OK to permanently delete the student record.'
+            );
+            
+            if (finalConfirm) {
+                // Disable button and show loading
+                deleteBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Deleting...';
+                deleteBtn.disabled = true;
+                
+                // Submit the form
+                this.submit();
+            }
+        }
+    });
+    
+    // Prevent accidental form submission with Enter key
+    confirmName.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            if (!deleteBtn.disabled) {
+                document.getElementById('deleteForm').dispatchEvent(new Event('submit'));
+            }
+        }
+    });
+    
+    // Add warning when leaving the page
+    let formInteracted = false;
+    
+    confirmName.addEventListener('input', function() {
+        formInteracted = true;
+    });
+    
+    confirmCheckbox.addEventListener('change', function() {
+        formInteracted = true;
+    });
+    
+    backupCheckbox.addEventListener('change', function() {
+        formInteracted = true;
+    });
+    
+    window.addEventListener('beforeunload', function(e) {
+        if (formInteracted && !deleteBtn.disabled) {
+            e.preventDefault();
+            e.returnValue = 'You have started the deletion process. Are you sure you want to leave?';
+            return e.returnValue;
+        }
+    });
+    
+    // Focus on name input
+    confirmName.focus();
+</script>
+{% endblock %}
+{% endblock %}

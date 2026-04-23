@@ -1,0 +1,37 @@
+{% extends 'admin_panel/admin_base.html' %}
+{% block title %}Delete Course{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header bg-danger text-white">
+        <h4><i class="fas fa-exclamation-triangle"></i> Delete Course</h4>
+    </div>
+    <div class="card-body">
+        <div class="alert alert-warning">
+            <i class="fas fa-warning"></i> Are you sure you want to delete the course "{{ course.name }}"?
+            <br><strong>This action cannot be undone!</strong>
+        </div>
+        
+        <div class="card mb-3">
+            <div class="card-body">
+                <h5>Course Details:</h5>
+                <p><strong>Name:</strong> {{ course.name }}</p>
+                <p><strong>Category:</strong> {{ course.get_category_display }}</p>
+                <p><strong>Duration:</strong> {{ course.duration }}</p>
+                <p><strong>Fee:</strong> ₹{{ course.fee }}</p>
+                <p><strong>Students Enrolled:</strong> {{ course.student_set.count }}</p>
+            </div>
+        </div>
+        
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">
+                <i class="fas fa-trash"></i> Yes, Delete Course
+            </button>
+            <a href="{% url 'manage_courses' %}" class="btn btn-secondary">
+                <i class="fas fa-times"></i> Cancel
+            </a>
+        </form>
+    </div>
+</div>
+{% endblock %}

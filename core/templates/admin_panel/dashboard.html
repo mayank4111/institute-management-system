@@ -1,0 +1,240 @@
+{% extends 'admin_panel/admin_base.html' %}
+{% load static %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- Welcome Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="stat-card" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+                <h2><i class="fas fa-chart-line"></i> Welcome back, {{ request.user.username }}!</h2>
+                <p class="mb-0">Here's what's happening with your institute today.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statistics Cards -->
+    <div class="row">
+        <div class="col-md-3">
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="stat-number">{{ total_students }}</div>
+                <div class="stat-label">Total Students</div>
+                <small class="text-muted">Registered students</small>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-book"></i>
+                </div>
+                <div class="stat-number">{{ total_courses }}</div>
+                <div class="stat-label">Total Courses</div>
+                <small class="text-muted">Active courses</small>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <div class="stat-number">{{ pending_admissions }}</div>
+                <div class="stat-label">Pending Admissions</div>
+                <small class="text-muted">Awaiting approval</small>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-envelope"></i>
+                </div>
+                <div class="stat-number">{{ total_messages }}</div>
+                <div class="stat-label">New Messages</div>
+                <small class="text-muted">Unread messages</small>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts Row -->
+    <div class="row">
+        <div class="col-md-6">
+            <div class="table-container">
+                <h5><i class="fas fa-chart-pie"></i> Course Enrollment Distribution</h5>
+                <canvas id="enrollmentChart" height="250"></canvas>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="table-container">
+                <h5><i class="fas fa-chart-line"></i> Monthly Admissions</h5>
+                <canvas id="admissionChart" height="250"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Students -->
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <div class="table-container">
+                <h5><i class="fas fa-user-graduate"></i> Recent Students</h5>
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Course</th>
+                                <th>Status</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for student in recent_students %}
+                            <tr>
+                                <td>{{ student.name }}</td>
+                                <td>{{ student.course.name|default:"-" }}</td>
+                                <td>
+                                    <span class="badge bg-{% if student.status == 'enrolled' %}success{% elif student.status == 'pending' %}warning{% else %}secondary{% endif %}">
+                                        {{ student.get_status_display }}
+                                    </span>
+                                </td>
+                                <td>{{ student.admission_date|date:"Y-m-d" }}</td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="4" class="text-center">No students found</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Messages -->
+        <div class="col-md-6">
+            <div class="table-container">
+                <h5><i class="fas fa-envelope"></i> Recent Messages</h5>
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>From</th>
+                                <th>Subject</th>
+                                <th>Status</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for message in recent_messages %}
+                            <tr>
+                                <td>{{ message.name }}</td>
+                                <td>{{ message.subject|truncatechars:30 }}</td>
+                                <td>
+                                    {% if message.is_read %}
+                                        <span class="badge bg-success">Read</span>
+                                    {% else %}
+                                        <span class="badge bg-danger">Unread</span>
+                                    {% endif %}
+                                </td>
+                                <td>{{ message.created_at|date:"Y-m-d" }}</td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="4" class="text-center">No messages found</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="table-container">
+                <h5><i class="fas fa-bolt"></i> Quick Actions</h5>
+                <div class="row">
+                    <div class="col-md-3 mb-2">
+                        <a href="{% url 'add_course' %}" class="btn btn-primary w-100">
+                            <i class="fas fa-plus"></i> Add Course
+                        </a>
+                    </div>
+                    <div class="col-md-3 mb-2">
+                        <a href="{% url 'add_staff' %}" class="btn btn-success w-100">
+                            <i class="fas fa-user-plus"></i> Add Staff
+                        </a>
+                    </div>
+                    <div class="col-md-3 mb-2">
+                        <a href="{% url 'manage_admissions' %}" class="btn btn-info w-100">
+                            <i class="fas fa-clipboard-list"></i> View Admissions
+                        </a>
+                    </div>
+                    <div class="col-md-3 mb-2">
+                        <a href="{% url 'manage_messages' %}" class="btn btn-warning w-100">
+                            <i class="fas fa-envelope"></i> Check Messages
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% block extra_js %}
+<script>
+    // Enrollment Distribution Chart
+    const enrollmentCtx = document.getElementById('enrollmentChart').getContext('2d');
+    new Chart(enrollmentCtx, {
+        type: 'pie',
+        data: {
+            labels: {% if course_enrollment_data %} {{ course_enrollment_data.labels|safe }} {% else %} ['Programming', 'Design', 'Business', 'Marketing'] {% endif %},
+            datasets: [{
+                data: {% if course_enrollment_data %} {{ course_enrollment_data.data|safe }} {% else %} [30, 25, 20, 15] {% endif %},
+                backgroundColor: ['#667eea', '#764ba2', '#f093fb', '#f5576c'],
+                borderWidth: 0
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            plugins: {
+                legend: {
+                    position: 'bottom'
+                }
+            }
+        }
+    });
+
+    // Monthly Admissions Chart
+    const admissionCtx = document.getElementById('admissionChart').getContext('2d');
+    new Chart(admissionCtx, {
+        type: 'line',
+        data: {
+            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+            datasets: [{
+                label: 'Admissions',
+                data: {% if monthly_admissions %} {{ monthly_admissions|safe }} {% else %} [12, 19, 15, 17, 14, 23] {% endif %},
+                borderColor: '#667eea',
+                backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                tension: 0.4,
+                fill: true
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                }
+            }
+        }
+    });
+</script>
+{% endblock %}
+{% endblock %}

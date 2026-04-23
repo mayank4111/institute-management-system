@@ -1,0 +1,142 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Our Courses - Institute Name{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<section class="py-5 bg-light" style="margin-top: -56px;">
+    <div class="container py-5 text-center">
+        <h1 class="display-4 fw-bold mb-3" data-aos="fade-up">Our Courses</h1>
+        <p class="lead" data-aos="fade-up" data-aos-delay="100">Choose from our wide range of professional courses designed to boost your career</p>
+    </div>
+</section>
+
+<!-- Course Filters -->
+<section class="py-4">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <input type="text" id="searchCourse" class="form-control" placeholder="Search courses...">
+            </div>
+            <div class="col-md-4 mb-3">
+                <select id="categoryFilter" class="form-select">
+                    <option value="all">All Categories</option>
+                    <option value="programming">Programming</option>
+                    <option value="design">Design</option>
+                    <option value="business">Business</option>
+                    <option value="marketing">Marketing</option>
+                </select>
+            </div>
+            <div class="col-md-4 mb-3">
+                <select id="sortBy" class="form-select">
+                    <option value="name">Sort by Name</option>
+                    <option value="fee_low">Sort by Fee (Low to High)</option>
+                    <option value="fee_high">Sort by Fee (High to Low)</option>
+                </select>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Courses Grid -->
+<section class="py-4">
+    <div class="container">
+        <div class="row" id="courseGrid">
+            {% for course in courses %}
+            <div class="col-md-4 mb-4 course-item" data-category="{{ course.category }}" data-name="{{ course.name|lower }}" data-fee="{{ course.fee }}">
+                <div class="card h-100 shadow-sm hover-shadow" data-aos="fade-up" data-aos-delay="{{ forloop.counter|add:100 }}">
+                    {% if course.image %}
+                        <img src="{{ course.image.url }}" class="card-img-top" alt="{{ course.name }}" style="height: 200px; object-fit: cover;">
+                    {% else %}
+                        <img src="https://via.placeholder.com/350x200" class="card-img-top" alt="{{ course.name }}" style="height: 200px; object-fit: cover;">
+                    {% endif %}
+                    <div class="card-body">
+                        <span class="badge bg-info mb-2">{{ course.get_category_display }}</span>
+                        <h5 class="card-title">{{ course.name }}</h5>
+                        <p class="card-text">{{ course.description|truncatewords:25 }}</p>
+                        <div class="mb-2">
+                            <i class="fas fa-clock text-primary"></i> {{ course.duration }}
+                        </div>
+                        <div class="mb-3">
+                            <i class="fas fa-rupee-sign text-primary"></i> <strong>{{ course.fee }}</strong>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <a href="{% url 'course_detail' course.id %}" class="btn btn-primary btn-sm">View Details</a>
+                            {% if course.syllabus %}
+                                <a href="{% url 'download_syllabus' course.id %}" class="btn btn-success btn-sm">
+                                    <i class="fas fa-download"></i> Syllabus
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center py-5">
+                <i class="fas fa-book-open fa-4x text-muted mb-3"></i>
+                <h3>No Courses Available</h3>
+                <p>Check back later for our course offerings.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="py-5 text-center" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+    <div class="container">
+        <h2 data-aos="fade-up">Need Help Choosing a Course?</h2>
+        <p class="lead mb-4" data-aos="fade-up" data-aos-delay="100">Our counselors are here to guide you</p>
+        <a href="/contact/" class="btn btn-light btn-lg" data-aos="fade-up" data-aos-delay="200">
+            <i class="fas fa-headset"></i> Contact Counselor
+        </a>
+    </div>
+</section>
+
+{% block extra_js %}
+<script>
+    // Filter and search functionality
+    const searchInput = document.getElementById('searchCourse');
+    const categoryFilter = document.getElementById('categoryFilter');
+    const sortBy = document.getElementById('sortBy');
+    const courseGrid = document.getElementById('courseGrid');
+    let courses = Array.from(document.querySelectorAll('.course-item'));
+
+    function filterCourses() {
+        const searchTerm = searchInput.value.toLowerCase();
+        const category = categoryFilter.value;
+        
+        let filtered = courses.filter(course => {
+            const matchesSearch = course.dataset.name.includes(searchTerm);
+            const matchesCategory = category === 'all' || course.dataset.category === category;
+            return matchesSearch && matchesCategory;
+        });
+
+        // Sort courses
+        const sortValue = sortBy.value;
+        if (sortValue === 'name') {
+            filtered.sort((a, b) => a.dataset.name.localeCompare(b.dataset.name));
+        } else if (sortValue === 'fee_low') {
+            filtered.sort((a, b) => parseFloat(a.dataset.fee) - parseFloat(b.dataset.fee));
+        } else if (sortValue === 'fee_high') {
+            filtered.sort((a, b) => parseFloat(b.dataset.fee) - parseFloat(a.dataset.fee));
+        }
+
+        // Update display
+        courseGrid.innerHTML = '';
+        if (filtered.length === 0) {
+            courseGrid.innerHTML = '<div class="col-12 text-center py-5"><i class="fas fa-search fa-4x text-muted mb-3"></i><h3>No courses found</h3><p>Try adjusting your search criteria.</p></div>';
+        } else {
+            filtered.forEach(course => {
+                courseGrid.appendChild(course);
+            });
+        }
+    }
+
+    searchInput.addEventListener('input', filterCourses);
+    categoryFilter.addEventListener('change', filterCourses);
+    sortBy.addEventListener('change', filterCourses);
+</script>
+{% endblock %}
+{% endblock %}

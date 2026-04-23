@@ -1,0 +1,63 @@
+{% extends 'admin_panel/admin_base.html' %}
+{% block title %}Manage Admissions{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h4><i class="fas fa-users"></i> Student Admissions</h4>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover data-table">
+                <thead>
+                    <tr>
+                        <th>Enrollment No.</th>
+                        <th>Student Name</th>
+                        <th>Course</th>
+                        <th>Admission Date</th>
+                        <th>Fee Paid (₹)</th>
+                        <th>Remaining (₹)</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for admission in admissions %}
+                    <tr>
+                        <td><strong>{{ admission.enrollment_number }}</strong></td>
+                        <td>{{ admission.student.name }}</td>
+                        <td>{{ admission.course.name }}</td>
+                        <td>{{ admission.admission_date|date:"Y-m-d" }}</td>
+                        <td>₹{{ admission.fee_paid }}</td>
+                        <td>₹{{ admission.remaining_fee }}</td>
+                        <td>
+                            {% if admission.status == 'enrolled' %}
+                                <span class="badge bg-success">Enrolled</span>
+                            {% elif admission.status == 'pending' %}
+                                <span class="badge bg-warning">Pending</span>
+                            {% elif admission.status == 'completed' %}
+                                <span class="badge bg-info">Completed</span>
+                            {% else %}
+                                <span class="badge bg-danger">Cancelled</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a href="{% url 'update_admission_status' admission.id %}" class="btn btn-sm btn-warning">
+                                <i class="fas fa-edit"></i> Update Status
+                            </a>
+                            <a href="{% url 'add_payment' admission.id %}" class="btn btn-sm btn-success">
+                                <i class="fas fa-money-bill"></i> Add Payment
+                            </a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="8" class="text-center">No admissions found</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
