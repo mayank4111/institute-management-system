@@ -1,0 +1,130 @@
+{% extends 'admin_panel/admin_base.html' %}
+{% load static %}
+
+{% block title %}Edit Course{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/admin_panel/edit_course.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="edit-course-page">
+    <div class="container-fluid">
+
+        <div class="row mb-4">
+            <div class="col-12">
+                <h2 class="page-title">
+                    <i class="fas fa-edit"></i> Edit Course: {{ course.name }}
+                </h2>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-8 mx-auto">
+                <div class="form-card">
+
+                    <form method="post" enctype="multipart/form-data" id="editCourseForm">
+                        {% csrf_token %}
+
+                        <!-- Row 1 -->
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Course Name *</label>
+                                <input type="text" name="name" class="form-control"
+                                       value="{{ course.name }}" required>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Category *</label>
+                                <select name="category" class="form-select" required>
+                                    {% for category in categories %}
+                                    <option value="{{ category }}"
+                                        {% if category == course.category %}selected{% endif %}>
+                                        {{ category|title }}
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Row 2 -->
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Duration *</label>
+                                <input type="text" name="duration" class="form-control"
+                                       value="{{ course.duration }}" required>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Fee (₹) *</label>
+                                <input type="number" name="fee" class="form-control"
+                                       value="{{ course.fee }}" required id="feeInput">
+                            </div>
+                        </div>
+
+                        <!-- Description -->
+                        <div class="mb-3">
+                            <label class="form-label">Description *</label>
+                            <textarea name="description" rows="5" class="form-control" required>{{ course.description }}</textarea>
+                        </div>
+
+                        <!-- Files -->
+                        <div class="row">
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Current Image</label>
+
+                                {% if course.image %}
+                                <div class="mb-2">
+                                    <img src="{{ course.image.url }}" class="img-preview">
+                                </div>
+                                {% endif %}
+
+                                <input type="file" name="image" class="form-control"
+                                       accept="image/*" id="imageInput">
+                                <small class="text-muted">Max size: 2MB</small>
+
+                                <img id="newImagePreview" class="img-preview mt-2 d-none">
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Current Syllabus</label>
+
+                                {% if course.syllabus %}
+                                <div class="mb-2">
+                                    <a href="{{ course.syllabus.url }}" target="_blank"
+                                       class="btn btn-sm btn-info">
+                                        <i class="fas fa-file-pdf"></i> View PDF
+                                    </a>
+                                </div>
+                                {% endif %}
+
+                                <input type="file" name="syllabus" class="form-control"
+                                       accept=".pdf" id="pdfInput">
+                                <small class="text-muted">PDF only, max 5MB</small>
+                            </div>
+
+                        </div>
+
+                        <!-- Buttons -->
+                        <div class="d-flex justify-content-end gap-2">
+                            <a href="{% url 'manage_courses' %}" class="btn btn-secondary">Cancel</a>
+
+                            <button type="submit" class="btn btn-primary" id="submitBtn">
+                                <i class="fas fa-save"></i> Update Course
+                            </button>
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/admin_panel/edit_course.js' %}"></script>
+{% endblock %}

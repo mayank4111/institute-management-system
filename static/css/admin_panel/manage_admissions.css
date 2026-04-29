@@ -1,0 +1,37 @@
+.manage-admissions-page {
+    padding: 10px;
+}
+
+.main-card {
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+}
+
+/* Status Colors */
+.status-enrolled {
+    background-color: #28a745;
+}
+
+.status-pending {
+    background-color: #ffc107;
+    color: #000;
+}
+
+.status-completed {
+    background-color: #17a2b8;
+}
+
+.status-cancelled {
+    background-color: #dc3545;
+}
+
+/* Remaining fee highlight */
+.remaining-fee {
+    color: #e74c3c;
+    font-weight: bold;
+}
+
+/* Table */
+.table th {
+    font-weight: 600;
+}

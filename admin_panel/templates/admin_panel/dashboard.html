@@ -1,0 +1,89 @@
+{% extends 'admin_panel/admin_base.html' %}
+{% load static %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/admin_panel/dashboard.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid dashboard-page">
+
+    <!-- Welcome -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="stat-card welcome-card">
+                <h2><i class="fas fa-chart-line"></i> Welcome back, {{ request.user.username }}!</h2>
+                <p class="mb-0">Here's what's happening with your institute today.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="row">
+        <div class="col-md-3">
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-users"></i></div>
+                <div class="stat-number">{{ total_students }}</div>
+                <div class="stat-label">Total Students</div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-book"></i></div>
+                <div class="stat-number">{{ total_courses }}</div>
+                <div class="stat-label">Total Courses</div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-clock"></i></div>
+                <div class="stat-number">{{ pending_admissions }}</div>
+                <div class="stat-label">Pending Admissions</div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-envelope"></i></div>
+                <div class="stat-number">{{ total_messages }}</div>
+                <div class="stat-label">New Messages</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts -->
+    <div class="row">
+        <div class="col-md-6">
+            <div class="table-container">
+                <h5>Course Enrollment</h5>
+                <canvas id="enrollmentChart"></canvas>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="table-container">
+                <h5>Monthly Admissions</h5>
+                <canvas id="admissionChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    const enrollmentData = {
+        labels: {{ course_enrollment_data.labels|default:"['Programming','Design']"|safe }},
+        data: {{ course_enrollment_data.data|default:"[30,20]"|safe }}
+    };
+
+    const monthlyData = {{ monthly_admissions|default:"[10,20,30]"|safe }};
+</script>
+
+<script src="{% static 'js/admin_panel/dashboard.js' %}"></script>
+{% endblock %}

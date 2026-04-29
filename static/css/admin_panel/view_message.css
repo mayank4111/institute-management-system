@@ -1,0 +1,29 @@
+.view-message-page {
+    padding: 10px;
+}
+
+.main-card {
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+}
+
+/* Labels */
+.label {
+    font-weight: 600;
+    color: #6c757d;
+}
+
+/* Subject */
+.subject {
+    font-weight: bold;
+    font-size: 16px;
+}
+
+/* Message Box */
+.message-box {
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    white-space: pre-wrap;
+}

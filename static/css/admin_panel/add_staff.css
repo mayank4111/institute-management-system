@@ -1,0 +1,33 @@
+/* Page Wrapper */
+.add-staff-page {
+    padding: 10px;
+}
+
+/* Main Card */
+.main-card {
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+}
+
+/* Input Focus */
+.form-control:focus {
+    border-color: #007bff;
+    box-shadow: none;
+}
+
+/* Button Styling */
+.btn-primary {
+    background-color: #007bff;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #0069d9;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .main-card {
+        padding: 10px;
+    }
+}

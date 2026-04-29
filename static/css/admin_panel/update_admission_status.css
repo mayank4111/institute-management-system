@@ -1,0 +1,13 @@
+.update-admission-page {
+    padding: 10px;
+}
+
+.info-card, .form-card {
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+}
+
+.remaining {
+    font-weight: bold;
+    color: #dc3545;
+}

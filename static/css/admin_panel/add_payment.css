@@ -1,0 +1,52 @@
+/* Page Wrapper */
+.add-payment-page {
+    padding: 10px;
+}
+
+/* Main Card */
+.main-card {
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+}
+
+/* Section Title */
+.section-title {
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+/* Info Card */
+.info-card {
+    background-color: #f8f9fa;
+    border-radius: 10px;
+}
+
+/* Remaining Fee Highlight */
+.remaining-fee {
+    color: #e74c3c;
+    font-weight: bold;
+}
+
+/* Input Focus */
+.form-control:focus,
+.form-select:focus {
+    border-color: #28a745;
+    box-shadow: none;
+}
+
+/* Buttons */
+.btn-success {
+    background-color: #28a745;
+    border: none;
+}
+
+.btn-success:hover {
+    background-color: #218838;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .main-card {
+        padding: 10px;
+    }
+}

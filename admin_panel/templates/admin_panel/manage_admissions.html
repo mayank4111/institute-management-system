@@ -1,0 +1,95 @@
+{% extends 'admin_panel/admin_base.html' %}
+{% load static %}
+
+{% block title %}Manage Admissions{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/admin_panel/manage_admissions.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="manage-admissions-page">
+
+    <div class="card main-card">
+
+        <div class="card-header">
+            <h4><i class="fas fa-users"></i> Student Admissions</h4>
+        </div>
+
+        <div class="card-body">
+
+            <!-- Search -->
+            <div class="mb-3">
+                <input type="text" id="searchInput" class="form-control"
+                       placeholder="Search by name, course, enrollment...">
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-hover data-table" id="admissionsTable">
+
+                    <thead>
+                        <tr>
+                            <th>Enrollment No.</th>
+                            <th>Student Name</th>
+                            <th>Course</th>
+                            <th>Date</th>
+                            <th>Fee Paid</th>
+                            <th>Remaining</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for admission in admissions %}
+                        <tr>
+                            <td><strong>{{ admission.enrollment_number }}</strong></td>
+                            <td>{{ admission.student.name }}</td>
+                            <td>{{ admission.course.name }}</td>
+                            <td>{{ admission.admission_date|date:"Y-m-d" }}</td>
+
+                            <td>₹{{ admission.fee_paid }}</td>
+
+                            <td class="remaining-fee">
+                                ₹{{ admission.remaining_fee }}
+                            </td>
+
+                            <td>
+                                <span class="badge status-badge status-{{ admission.status }}">
+                                    {{ admission.get_status_display }}
+                                </span>
+                            </td>
+
+                            <td>
+                                <div class="d-flex gap-1">
+                                    <a href="{% url 'update_admission_status' admission.id %}"
+                                       class="btn btn-sm btn-warning">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+
+                                    <a href="{% url 'add_payment' admission.id %}"
+                                       class="btn btn-sm btn-success">
+                                        <i class="fas fa-money-bill"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="8" class="text-center">No admissions found</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/admin_panel/manage_admissions.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,39 @@
+/* Page */
+.delete-course-page {
+    padding: 10px;
+}
+
+/* Main Card */
+.main-card {
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+}
+
+/* Header */
+.danger-header {
+    background-color: #dc3545;
+    color: white;
+    border-radius: 10px 10px 0 0;
+}
+
+/* Info Card */
+.info-card {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+}
+
+/* Students Highlight */
+.students-count {
+    color: #dc3545;
+    font-weight: bold;
+}
+
+/* Button */
+.btn-danger {
+    background-color: #dc3545;
+    border: none;
+}
+
+.btn-danger:hover {
+    background-color: #c82333;
+}

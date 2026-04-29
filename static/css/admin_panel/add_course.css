@@ -1,0 +1,37 @@
+/* Page Title */
+.page-title {
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+/* Card Styling */
+.form-card {
+    background: #ffffff;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+/* Input Focus */
+.form-control:focus,
+.form-select:focus {
+    border-color: #4CAF50;
+    box-shadow: none;
+}
+
+/* Button Styling */
+.btn-primary {
+    background-color: #4CAF50;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #45a049;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .form-card {
+        padding: 15px;
+    }
+}

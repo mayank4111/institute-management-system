@@ -1,0 +1,103 @@
+{% extends 'admin_panel/admin_base.html' %}
+{% load static %}
+
+{% block title %}Add Payment{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/admin_panel/add_payment.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="add-payment-page">
+
+    <div class="card main-card">
+        <div class="card-header">
+            <h4><i class="fas fa-money-bill"></i> Add Payment</h4>
+        </div>
+
+        <div class="card-body">
+            <div class="row">
+
+                <!-- LEFT SIDE (DETAILS) -->
+                <div class="col-md-6">
+                    <div class="card info-card mb-3">
+                        <div class="card-body">
+                            <h5 class="section-title">Payment Details</h5>
+
+                            <p><strong>Student:</strong> {{ admission.student.name }}</p>
+                            <p><strong>Course:</strong> {{ admission.course.name }}</p>
+                            <p><strong>Enrollment No:</strong> {{ admission.enrollment_number }}</p>
+
+                            <hr>
+
+                            <p><strong>Total Fee:</strong> ₹{{ admission.course.fee }}</p>
+                            <p><strong>Fee Paid:</strong> ₹{{ admission.fee_paid }}</p>
+                            <p class="remaining-fee">
+                                <strong>Remaining Fee:</strong> ₹{{ admission.remaining_fee }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RIGHT SIDE (FORM) -->
+                <div class="col-md-6">
+                    <form method="post" enctype="multipart/form-data" id="paymentForm">
+                        {% csrf_token %}
+
+                        <div class="mb-3">
+                            <label class="form-label">Amount (₹) *</label>
+                            <input type="number" name="amount" class="form-control"
+                                   max="{{ admission.remaining_fee }}" step="0.01" required>
+                            <small class="text-muted">
+                                Maximum amount: ₹{{ admission.remaining_fee }}
+                            </small>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Payment Method *</label>
+                            <select name="payment_method" class="form-select" required>
+                                <option value="">Select Payment Method</option>
+                                <option value="Cash">Cash</option>
+                                <option value="Credit Card">Credit Card</option>
+                                <option value="Debit Card">Debit Card</option>
+                                <option value="Bank Transfer">Bank Transfer</option>
+                                <option value="UPI">UPI</option>
+                                <option value="Cheque">Cheque</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Receipt (PDF/Image)</label>
+                            <input type="file" name="receipt" class="form-control"
+                                   accept=".pdf,.jpg,.jpeg,.png">
+                            <small class="text-muted">Optional: Upload payment receipt</small>
+                        </div>
+
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle"></i>
+                            Remaining fee will be updated automatically after payment.
+                        </div>
+
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-success">
+                                <i class="fas fa-money-bill"></i> Add Payment
+                            </button>
+
+                            <a href="{% url 'manage_admissions' %}" class="btn btn-secondary">
+                                <i class="fas fa-times"></i> Cancel
+                            </a>
+                        </div>
+
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/admin_panel/add_payment.js' %}"></script>
+{% endblock %}

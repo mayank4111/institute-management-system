@@ -1,0 +1,44 @@
+/* Navbar */
+.navbar {
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Footer */
+.footer {
+    background-color: #343a40;
+    color: white;
+    padding: 50px 0 20px;
+    margin-top: 50px;
+}
+
+.footer a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.footer a:hover {
+    color: #0d6efd;
+}
+
+/* Cards */
+.card {
+    transition: transform 0.3s;
+    margin-bottom: 20px;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+/* Hero */
+.hero-section {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    padding: 100px 0;
+}
+
+/* Alerts */
+.alert {
+    margin-top: 20px;
+}

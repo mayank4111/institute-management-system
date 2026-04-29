@@ -1,0 +1,33 @@
+.delete-message-page {
+    padding: 10px;
+}
+
+.main-card {
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+}
+
+.danger-header {
+    background-color: #dc3545;
+    color: white;
+    border-radius: 10px 10px 0 0;
+}
+
+.info-card {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+}
+
+.message-text {
+    color: #555;
+}
+
+/* Button */
+.btn-danger {
+    background-color: #dc3545;
+    border: none;
+}
+
+.btn-danger:hover {
+    background-color: #c82333;
+}

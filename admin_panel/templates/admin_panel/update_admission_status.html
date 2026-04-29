@@ -1,0 +1,95 @@
+{% extends 'admin_panel/admin_base.html' %}
+{% load static %}
+
+{% block title %}Update Admission Status{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/admin_panel/update_admission_status.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="update-admission-page">
+
+    <!-- Header -->
+    <div class="mb-4">
+        <h4><i class="fas fa-edit"></i> Update Admission Status</h4>
+    </div>
+
+    <div class="row">
+
+        <!-- Student Details -->
+        <div class="col-md-6">
+            <div class="card info-card">
+                <div class="card-body">
+                    <h5 class="mb-3">Student Details</h5>
+
+                    <p><strong>Name:</strong> {{ admission.student.name }}</p>
+                    <p><strong>Email:</strong> {{ admission.student.email }}</p>
+                    <p><strong>Phone:</strong> {{ admission.student.phone }}</p>
+                    <p><strong>Course:</strong> {{ admission.course.name }}</p>
+                    <p><strong>Enrollment No:</strong> {{ admission.enrollment_number }}</p>
+
+                    <hr>
+
+                    <p><strong>Total Fee:</strong> ₹{{ admission.course.fee }}</p>
+                    <p><strong>Paid:</strong> ₹{{ admission.fee_paid }}</p>
+                    <p class="remaining"><strong>Remaining:</strong> ₹{{ admission.remaining_fee }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Form -->
+        <div class="col-md-6">
+            <div class="card form-card">
+                <div class="card-body">
+
+                    <form method="post" id="statusForm">
+                        {% csrf_token %}
+
+                        <div class="mb-3">
+                            <label class="form-label">Admission Status *</label>
+
+                            <select name="status" id="statusSelect" class="form-select" required>
+                                <option value="pending" {% if admission.status == 'pending' %}selected{% endif %}>Pending</option>
+                                <option value="enrolled" {% if admission.status == 'enrolled' %}selected{% endif %}>Enrolled</option>
+                                <option value="completed" {% if admission.status == 'completed' %}selected{% endif %}>Completed</option>
+                                <option value="cancelled" {% if admission.status == 'cancelled' %}selected{% endif %}>Cancelled</option>
+                            </select>
+                        </div>
+
+                        <!-- Dynamic Info -->
+                        <div id="statusInfo" class="alert alert-info">
+                            <i class="fas fa-info-circle"></i>
+                            Changing status to "Enrolled" will activate the student account.
+                        </div>
+
+                        <!-- Warning -->
+                        <div id="warningBox" class="alert alert-danger d-none">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            Cancelling admission is irreversible!
+                        </div>
+
+                        <div class="d-flex gap-2 mt-3">
+                            <button type="submit" class="btn btn-primary" id="submitBtn">
+                                <i class="fas fa-save"></i> Update Status
+                            </button>
+
+                            <a href="{% url 'manage_admissions' %}" class="btn btn-secondary">
+                                <i class="fas fa-times"></i> Cancel
+                            </a>
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/admin_panel/update_admission_status.js' %}"></script>
+{% endblock %}

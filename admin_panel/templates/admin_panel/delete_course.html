@@ -1,0 +1,67 @@
+{% extends 'admin_panel/admin_base.html' %}
+{% load static %}
+
+{% block title %}Delete Course{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/admin_panel/delete_course.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="delete-course-page">
+
+    <div class="card main-card">
+        
+        <!-- Header -->
+        <div class="card-header danger-header">
+            <h4><i class="fas fa-exclamation-triangle"></i> Delete Course</h4>
+        </div>
+
+        <div class="card-body">
+
+            <!-- Warning -->
+            <div class="alert alert-warning">
+                <i class="fas fa-warning"></i>
+                Are you sure you want to delete 
+                <strong>"{{ course.name }}"</strong>?
+                <br><strong>This action cannot be undone!</strong>
+            </div>
+            
+            <!-- Course Info -->
+            <div class="card info-card mb-3">
+                <div class="card-body">
+                    <h5>Course Details</h5>
+                    <p><strong>Name:</strong> {{ course.name }}</p>
+                    <p><strong>Category:</strong> {{ course.get_category_display }}</p>
+                    <p><strong>Duration:</strong> {{ course.duration }}</p>
+                    <p><strong>Fee:</strong> ₹{{ course.fee }}</p>
+                    <p class="students-count">
+                        <strong>Students Enrolled:</strong> {{ course.student_set.count }}
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Actions -->
+            <form method="post" id="deleteForm">
+                {% csrf_token %}
+
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-danger">
+                        <i class="fas fa-trash"></i> Yes, Delete Course
+                    </button>
+
+                    <a href="{% url 'manage_courses' %}" class="btn btn-secondary">
+                        <i class="fas fa-times"></i> Cancel
+                    </a>
+                </div>
+            </form>
+
+        </div>
+    </div>
+
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/admin_panel/delete_course.js' %}"></script>
+{% endblock %}
