@@ -1,15 +1,19 @@
-// base.js
-
-document.addEventListener("DOMContentLoaded", function () {
-    console.log("Frontend Loaded");
-
-    // Auto-hide alerts
-    setTimeout(() => {
-        let alerts = document.querySelectorAll(".alert");
-        alerts.forEach(alert => {
-            alert.style.transition = "opacity 0.5s";
-            alert.style.opacity = "0";
-            setTimeout(() => alert.remove(), 500);
-        });
-    }, 3000);
+// AOS
+AOS.init({
+    duration: 1000
 });
+
+// Navbar scroll effect
+window.addEventListener("scroll", () => {
+    const nav = document.querySelector(".custom-navbar");
+    if (window.scrollY > 50) {
+        nav.style.background = "#000";
+    } else {
+        nav.style.background = "rgba(0,0,0,0.6)";
+    }
+});
+
+// auto hide alerts
+setTimeout(() => {
+    document.querySelectorAll(".alert").forEach(el => el.remove());
+}, 3000);

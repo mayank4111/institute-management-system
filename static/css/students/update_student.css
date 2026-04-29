@@ -1,0 +1,9 @@
+.preview-img {
+    max-width: 120px;
+    border-radius: 10px;
+}
+
+.glass-inner {
+    background: rgba(255,255,255,0.1);
+    border-radius: 8px;
+}

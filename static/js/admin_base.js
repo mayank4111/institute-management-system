@@ -1,15 +1,11 @@
-// admin_base.js
+const toggle = document.getElementById("toggleSidebar");
+const sidebar = document.getElementById("sidebar");
 
-document.addEventListener("DOMContentLoaded", function () {
-    console.log("Admin Base Loaded");
-
-    // Auto-hide alerts
-    setTimeout(() => {
-        let alerts = document.querySelectorAll(".alert");
-        alerts.forEach(alert => {
-            alert.style.transition = "opacity 0.5s";
-            alert.style.opacity = "0";
-            setTimeout(() => alert.remove(), 500);
-        });
-    }, 3000);
+toggle.addEventListener("click", () => {
+    sidebar.classList.toggle("active");
 });
+
+// auto-hide alerts
+setTimeout(() => {
+    document.querySelectorAll(".alert").forEach(el => el.remove());
+}, 3000);

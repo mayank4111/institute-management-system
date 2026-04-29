@@ -1,0 +1,85 @@
+{% extends 'admin_panel/admin_base.html' %}
+{% load static %}
+
+{% block title %}Update Student{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/core/update_student.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+
+    <h2 class="mb-4">Update Student</h2>
+
+    <form method="POST" enctype="multipart/form-data" id="updateForm">
+        {% csrf_token %}
+
+        <!-- BASIC INFO -->
+        <div class="glass-card p-4 mb-3">
+            <h5>Basic Info</h5>
+
+            <input type="text" name="name" class="form-control mb-2" value="{{ student.name }}" required>
+            <input type="email" name="email" class="form-control mb-2" value="{{ student.email }}" required>
+            <input type="text" name="phone" class="form-control mb-2" value="{{ student.phone }}" required>
+
+        </div>
+
+        <!-- ACADEMIC -->
+        <div class="glass-card p-4 mb-3">
+            <h5>Academic</h5>
+
+            <select name="course" class="form-control mb-2" id="courseSelect">
+                {% for course in courses %}
+                <option value="{{ course.id }}" data-fee="{{ course.fee }}"
+                    {% if student.course.id == course.id %}selected{% endif %}>
+                    {{ course.name }}
+                </option>
+                {% endfor %}
+            </select>
+
+            <select name="status" class="form-control mb-2">
+                <option value="pending" {% if student.status == 'pending' %}selected{% endif %}>Pending</option>
+                <option value="enrolled" {% if student.status == 'enrolled' %}selected{% endif %}>Enrolled</option>
+            </select>
+
+            <div id="coursePreview" class="glass-inner p-2 d-none">
+                Fee: ₹<span id="courseFee"></span>
+            </div>
+
+        </div>
+
+        <!-- PHOTO -->
+        <div class="glass-card p-4 mb-3">
+            <h5>Photo</h5>
+
+            <input type="file" name="photo" id="photoInput" class="form-control">
+
+            <img id="previewImage" class="preview-img mt-2 d-none">
+
+        </div>
+
+        <!-- ACTIONS -->
+        <div class="d-flex justify-content-between">
+
+            <a href="{% url 'delete_student' student.id %}" class="btn btn-glass danger">
+                Delete
+            </a>
+
+            <div>
+                <a href="{% url 'student_list' %}" class="btn btn-glass">Cancel</a>
+                <button class="btn btn-glass primary" id="submitBtn">
+                    Update
+                </button>
+            </div>
+
+        </div>
+
+    </form>
+
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/core/update_student.js' %}"></script>
+{% endblock %}

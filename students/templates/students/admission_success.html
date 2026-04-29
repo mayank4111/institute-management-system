@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Admission Successful{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/core/admission_success.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5 pt-5">
+
+    <div class="glass-card p-5 text-center success-wrapper" data-aos="fade-up">
+
+        <!-- ICON -->
+        <div class="success-icon mb-4">
+            <i class="fas fa-check-circle"></i>
+        </div>
+
+        <!-- TITLE -->
+        <h1 class="mb-3">Admission Successful!</h1>
+        <p class="text-muted">
+            Your application has been submitted successfully.
+        </p>
+
+        <!-- ENROLLMENT -->
+        <div class="glass-inner p-4 mt-4">
+            <h5>Your Enrollment Number</h5>
+            <h2 class="highlight-text">{{ admission.enrollment_number }}</h2>
+            <p class="small-text">Keep this for future reference</p>
+        </div>
+
+        <!-- DETAILS -->
+        <div class="row mt-4">
+
+            <div class="col-md-6 mb-3">
+                <div class="glass-inner p-3">
+                    <i class="fas fa-user-graduate icon"></i>
+                    <h6>Student</h6>
+                    <p>{{ admission.student.name }}</p>
+                </div>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <div class="glass-inner p-3">
+                    <i class="fas fa-book icon"></i>
+                    <h6>Course</h6>
+                    <p>{{ admission.course.name }}</p>
+                </div>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <div class="glass-inner p-3">
+                    <i class="fas fa-calendar icon"></i>
+                    <h6>Date</h6>
+                    <p>{{ admission.admission_date }}</p>
+                </div>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <div class="glass-inner p-3">
+                    <i class="fas fa-rupee-sign icon"></i>
+                    <h6>Fee</h6>
+                    <p>₹{{ admission.course.fee }}</p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- STATUS -->
+        <div class="glass-inner warning-box mt-3 p-3">
+            ⏳ Your application is under review
+        </div>
+
+        <!-- BUTTONS -->
+        <div class="mt-4">
+            <a href="{% url 'students:student_login' %}" class="btn btn-glass primary me-2">
+                Login
+            </a>
+
+            <a href="{% url 'core:home' %}" class="btn btn-glass">
+                Home
+            </a>
+        </div>
+
+        <hr class="my-4">
+
+        <p class="small-text">
+            📩 Confirmation sent to {{ admission.student.email }}
+        </p>
+
+    </div>
+
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/core/admission_success.js' %}"></script>
+{% endblock %}

@@ -3,12 +3,18 @@
 
 {% block title %}Contact Us - Institute Name{% endblock %}
 
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/core/contact.css' %}">
+<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+{% endblock %}
+
 {% block content %}
+
 <!-- Page Header -->
-<section class="py-5 bg-light" style="margin-top: -56px;">
-    <div class="container py-5 text-center">
-        <h1 class="display-4 fw-bold mb-3" data-aos="fade-up">Contact Us</h1>
-        <p class="lead" data-aos="fade-up" data-aos-delay="100">Get in touch with us. We're here to help!</p>
+<section class="contact-header">
+    <div class="container text-center">
+        <h1 data-aos="fade-up">Contact Us</h1>
+        <p data-aos="fade-up" data-aos-delay="100">Get in touch with us. We're here to help!</p>
     </div>
 </section>
 
@@ -16,132 +22,68 @@
 <section class="py-5">
     <div class="container">
         <div class="row">
+
+            <!-- FORM -->
             <div class="col-md-6 mb-4" data-aos="fade-right">
-                <div class="card border-0 shadow-sm h-100">
-                    <div class="card-body p-4">
-                        <h3 class="mb-4"><i class="fas fa-envelope text-primary"></i> Send us a Message</h3>
-                        <form method="post" id="contactForm">
-                            {% csrf_token %}
-                            <div class="mb-3">
-                                <label class="form-label">Full Name *</label>
-                                <input type="text" name="name" class="form-control" required>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Email Address *</label>
-                                <input type="email" name="email" class="form-control" required>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Phone Number</label>
-                                <input type="tel" name="phone" class="form-control">
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Subject *</label>
-                                <input type="text" name="subject" class="form-control" required>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Message *</label>
-                                <textarea name="message" rows="5" class="form-control" required></textarea>
-                            </div>
-                            <button type="submit" class="btn btn-primary w-100">
-                                <i class="fas fa-paper-plane"></i> Send Message
-                            </button>
-                        </form>
-                    </div>
+                <div class="glass-card h-100">
+                    <h3 class="mb-4"><i class="fas fa-envelope"></i> Send Message</h3>
+
+                    <form method="post" id="contactForm">
+                        {% csrf_token %}
+
+                        <input type="text" name="name" placeholder="Full Name *" required>
+                        <input type="email" name="email" placeholder="Email Address *" required>
+                        <input type="tel" name="phone" placeholder="Phone Number">
+                        <input type="text" name="subject" placeholder="Subject *" required>
+                        <textarea name="message" rows="5" placeholder="Message *" required></textarea>
+
+                        <button type="submit" class="btn-glass">
+                            <i class="fas fa-paper-plane"></i> Send Message
+                        </button>
+                    </form>
                 </div>
             </div>
-            
+
+            <!-- INFO -->
             <div class="col-md-6 mb-4" data-aos="fade-left">
-                <div class="card border-0 shadow-sm h-100">
-                    <div class="card-body p-4">
-                        <h3 class="mb-4"><i class="fas fa-address-card text-primary"></i> Contact Information</h3>
-                        
-                        <div class="mb-4">
-                            <h5><i class="fas fa-map-marker-alt text-primary"></i> Address</h5>
-                            <p class="mb-0">123 Education Street, City, Country - 123456</p>
-                        </div>
-                        
-                        <div class="mb-4">
-                            <h5><i class="fas fa-phone text-primary"></i> Phone</h5>
-                            <p class="mb-0">+123 456 7890</p>
-                            <p>+098 765 4321</p>
-                        </div>
-                        
-                        <div class="mb-4">
-                            <h5><i class="fas fa-envelope text-primary"></i> Email</h5>
-                            <p class="mb-0">info@institute.com</p>
-                            <p>admissions@institute.com</p>
-                        </div>
-                        
-                        <div class="mb-4">
-                            <h5><i class="fas fa-clock text-primary"></i> Office Hours</h5>
-                            <p class="mb-0">Monday - Friday: 9:00 AM - 6:00 PM</p>
-                            <p>Saturday: 10:00 AM - 4:00 PM</p>
-                            <p>Sunday: Closed</p>
-                        </div>
-                        
-                        <div>
-                            <h5><i class="fas fa-share-alt text-primary"></i> Follow Us</h5>
-                            <div class="social-links">
-                                <a href="#" class="btn btn-outline-primary btn-sm me-2"><i class="fab fa-facebook-f"></i></a>
-                                <a href="#" class="btn btn-outline-info btn-sm me-2"><i class="fab fa-twitter"></i></a>
-                                <a href="#" class="btn btn-outline-danger btn-sm me-2"><i class="fab fa-instagram"></i></a>
-                                <a href="#" class="btn btn-outline-primary btn-sm"><i class="fab fa-linkedin-in"></i></a>
-                            </div>
-                        </div>
+                <div class="glass-card h-100">
+                    <h3 class="mb-4"><i class="fas fa-address-card"></i> Contact Info</h3>
+
+                    <p>📍 Pune, India</p>
+                    <p>📞 +91 XXXXXXXX</p>
+                    <p>✉ info@institute.com</p>
+
+                    <div class="social-links mt-3">
+                        <i class="fab fa-facebook"></i>
+                        <i class="fab fa-linkedin"></i>
+                        <i class="fab fa-instagram"></i>
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
 </section>
 
 <!-- Map Section -->
-<section class="py-5 bg-light">
-    <div class="container">
-        <div class="row">
-            <div class="col-12">
-                <div class="card border-0 shadow-sm">
-                    <div class="card-body p-0">
-                        <iframe 
-                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d387193.305935303!2d-74.25986548248684!3d40.69714941932609!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c24fa5d33f083b%3A0xc80b8f06e177fe62!2sNew%20York%2C%20NY%2C%20USA!5e0!3m2!1sen!2s!4v1646812345678!5m2!1sen!2s" 
-                            width="100%" 
-                            height="400" 
-                            style="border:0;" 
-                            allowfullscreen="" 
-                            loading="lazy">
-                        </iframe>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+<section class="map-section">
+    <iframe src="https://maps.google.com/maps?q=Pune&t=&z=13&ie=UTF8&iwloc=&output=embed"></iframe>
 </section>
 
-<!-- FAQ Quick Links -->
-<section class="py-5">
-    <div class="container text-center">
-        <h3 class="mb-4">Frequently Asked Questions</h3>
-        <p class="mb-4">Find answers to common questions about our courses, admissions, and more.</p>
-        <a href="/about/" class="btn btn-outline-primary">
+<!-- FAQ -->
+<section class="py-5 text-center">
+    <div class="container">
+        <h3>Frequently Asked Questions</h3>
+        <p>Find answers to common questions</p>
+        <a href="{% url 'core:about' %}" class="btn-glass">
             <i class="fas fa-question-circle"></i> View FAQs
         </a>
     </div>
 </section>
 
-{% block extra_js %}
-<script>
-    // Form validation and submission
-    document.getElementById('contactForm').addEventListener('submit', function(e) {
-        const name = this.querySelector('[name="name"]').value;
-        const email = this.querySelector('[name="email"]').value;
-        const subject = this.querySelector('[name="subject"]').value;
-        const message = this.querySelector('[name="message"]').value;
-        
-        if (!name || !email || !subject || !message) {
-            e.preventDefault();
-            alert('Please fill in all required fields.');
-        }
-    });
-</script>
 {% endblock %}
+
+{% block extra_js %}
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script src="{% static 'js/core/contact.js' %}"></script>
 {% endblock %}

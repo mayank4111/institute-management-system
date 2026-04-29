@@ -3,53 +3,61 @@
 
 {% block title %}Student Login{% endblock %}
 
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/core/student_login.css' %}">
+<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+{% endblock %}
+
 {% block content %}
-<div class="container mt-5 pt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-5">
-            <div class="card border-0 shadow-lg" data-aos="fade-up">
-                <div class="card-header bg-primary text-white text-center py-4">
-                    <i class="fas fa-user-graduate fa-3x mb-2"></i>
-                    <h3 class="mb-0">Student Login</h3>
-                    <p class="mb-0">Access your student dashboard</p>
-                </div>
-                <div class="card-body p-4">
-                    <form method="post">
-                        {% csrf_token %}
-                        <div class="mb-3">
-                            <label class="form-label">Email Address</label>
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="fas fa-envelope"></i></span>
-                                <input type="email" name="email" class="form-control" placeholder="Enter your email" required>
-                            </div>
-                        </div>
-                        <div class="mb-4">
-                            <label class="form-label">Enrollment Number</label>
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="fas fa-id-card"></i></span>
-                                <input type="text" name="enrollment_number" class="form-control" placeholder="Enter enrollment number" required>
-                            </div>
-                        </div>
-                        <button type="submit" class="btn btn-primary w-100 py-2">
-                            <i class="fas fa-sign-in-alt"></i> Login
-                        </button>
-                    </form>
-                    <hr class="my-4">
-                    <div class="text-center">
-                        <p class="mb-2">Don't have an account?</p>
-                        <a href="/students/admission/" class="btn btn-outline-primary">
-                            <i class="fas fa-edit"></i> Apply for Admission
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <div class="text-center mt-3">
-                <small class="text-muted">
-                    <i class="fas fa-question-circle"></i> Need help? 
-                    <a href="/contact/">Contact Support</a>
-                </small>
-            </div>
+
+<div class="login-container">
+
+    <div class="login-card glass-card" data-aos="fade-up">
+
+        <div class="login-header text-center">
+            <i class="fas fa-user-graduate icon"></i>
+            <h3>Student Login</h3>
+            <p>Access your dashboard</p>
         </div>
+
+        <form method="post">
+            {% csrf_token %}
+
+            <div class="input-group-custom">
+                <i class="fas fa-envelope"></i>
+                <input type="email" name="email" placeholder="Email Address" required>
+            </div>
+
+            <div class="input-group-custom">
+                <i class="fas fa-id-card"></i>
+                <input type="text" name="enrollment_number" placeholder="Enrollment Number" required>
+            </div>
+
+            <button type="submit" class="btn-glass primary">
+                Login
+            </button>
+        </form>
+
+        <div class="login-footer text-center">
+            <p>Don't have an account?</p>
+            <a href="{% url 'students:admission' %}" class="btn-glass">
+                Apply for Admission
+            </a>
+        </div>
+
     </div>
+
+    <div class="help text-center">
+        <small>
+            Need help? <a href="{% url 'core:contact' %}">Contact Support</a>
+        </small>
+    </div>
+
 </div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script src="{% static 'js/core/student_login.js' %}"></script>
 {% endblock %}

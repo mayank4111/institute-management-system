@@ -1,0 +1,27 @@
+.delete-container {
+    max-width: 600px;
+    margin: auto;
+}
+
+.big-icon {
+    font-size: 50px;
+    color: #dc3545;
+}
+
+.student-photo {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+}
+
+.danger-box {
+    background: rgba(220, 53, 69, 0.2);
+}
+
+.info-grid p {
+    margin: 5px 0;
+}
+
+.muted {
+    color: #aaa;
+}

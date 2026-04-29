@@ -1,0 +1,54 @@
+.dashboard-container {
+    margin-top: 100px;
+}
+
+/* GLASS */
+.glass {
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(15px);
+    padding: 20px;
+    border-radius: 15px;
+    margin-bottom: 20px;
+}
+
+.glass-card {
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(20px);
+    padding: 20px;
+    border-radius: 15px;
+    margin-bottom: 20px;
+    transition: 0.3s;
+}
+
+.glass-card:hover {
+    transform: translateY(-5px);
+}
+
+/* PROFILE */
+.profile-img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+/* BUTTON */
+.btn-glass {
+    display: inline-block;
+    padding: 8px 15px;
+    margin: 5px;
+    border-radius: 20px;
+    background: rgba(255,255,255,0.2);
+    color: white;
+    text-decoration: none;
+}
+
+.btn-glass.danger {
+    background: #dc3545;
+}
+
+/* PAYMENT */
+.payment-item {
+    padding: 5px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.2);
+}

@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Student Admission{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/core/admission_form.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5 pt-5">
+
+    <div class="glass-card p-4 admission-wrapper" data-aos="fade-up">
+
+        <h2 class="text-center mb-4">🎓 Student Admission</h2>
+
+        <!-- STEP INDICATOR -->
+        <div class="step-indicator">
+            <div class="step active">1</div>
+            <div class="step">2</div>
+            <div class="step">3</div>
+            <div class="step">4</div>
+        </div>
+
+        <form method="POST" enctype="multipart/form-data" id="admissionForm">
+            {% csrf_token %}
+
+            <!-- STEP 1 -->
+            <div class="form-step active" id="step1">
+                <input type="text" name="name" class="form-control mb-3" placeholder="Full Name" required>
+                <input type="email" name="email" class="form-control mb-3" placeholder="Email" required>
+                <input type="text" name="phone" class="form-control mb-3" placeholder="Phone" required>
+            </div>
+
+            <!-- STEP 2 -->
+            <div class="form-step" id="step2">
+                <select name="course" class="form-control mb-3" id="courseSelect" required>
+                    <option value="">Select Course</option>
+                    {% for course in courses %}
+                    <option value="{{ course.id }}" data-fee="{{ course.fee }}" data-duration="{{ course.duration }}">
+                        {{ course.name }} (₹{{ course.fee }})
+                    </option>
+                    {% endfor %}
+                </select>
+
+                <div id="coursePreview" class="glass-inner p-3 d-none">
+                    <p><strong>Duration:</strong> <span id="courseDuration"></span></p>
+                    <p><strong>Fee:</strong> ₹<span id="courseFee"></span></p>
+                </div>
+            </div>
+
+            <!-- STEP 3 -->
+            <div class="form-step" id="step3">
+                <textarea name="address" class="form-control mb-3" placeholder="Address"></textarea>
+                <input type="file" name="photo" class="form-control mb-3">
+            </div>
+
+            <!-- STEP 4 -->
+            <div class="form-step" id="step4">
+                <div class="glass-inner p-3">
+                    <h5>Preview</h5>
+                    <div id="previewContent"></div>
+                </div>
+            </div>
+
+            <!-- BUTTONS -->
+            <div class="d-flex justify-content-between mt-4">
+                <button type="button" class="btn btn-glass" id="prevBtn">Previous</button>
+                <button type="button" class="btn btn-glass primary" id="nextBtn">Next</button>
+                <button type="submit" class="btn btn-glass success d-none" id="submitBtn">Submit</button>
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/core/admission_form.js' %}"></script>
+{% endblock %}

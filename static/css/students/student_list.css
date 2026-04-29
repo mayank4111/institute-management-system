@@ -1,0 +1,15 @@
+.glass-table {
+    color: white;
+}
+
+.status-enrolled {
+    color: #28a745;
+}
+
+.status-pending {
+    color: #ffc107;
+}
+
+.status-completed {
+    color: #17a2b8;
+}

@@ -1,0 +1,65 @@
+{% extends 'admin_panel/admin_base.html' %}
+{% load static %}
+
+{% block title %}Delete Student{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/core/delete_student.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="delete-container">
+
+    <!-- WARNING -->
+    <div class="glass-card danger-box text-center">
+        <i class="fas fa-exclamation-triangle big-icon"></i>
+        <h2>Delete Student</h2>
+        <p>This action is permanent</p>
+    </div>
+
+    <!-- STUDENT INFO -->
+    <div class="glass-card text-center p-4">
+
+        {% if student.photo %}
+            <img src="{{ student.photo.url }}" class="student-photo">
+        {% else %}
+            <i class="fas fa-user-circle fa-4x"></i>
+        {% endif %}
+
+        <h3>{{ student.name }}</h3>
+        <p class="muted">{{ student.email }}</p>
+
+        <div class="info-grid mt-3">
+            <p><strong>Course:</strong> {{ student.course.name|default:"-" }}</p>
+            <p><strong>Status:</strong> {{ student.get_status_display }}</p>
+            <p><strong>Date:</strong> {{ student.admission_date }}</p>
+        </div>
+    </div>
+
+    <!-- CONFIRM -->
+    <form method="POST" id="deleteForm" class="glass-card p-4 mt-3">
+        {% csrf_token %}
+
+        <label class="mb-2">Type <strong>{{ student.name }}</strong> to confirm</label>
+        <input type="text" id="confirmName" class="form-control mb-3">
+
+        <div class="form-check mb-2">
+            <input type="checkbox" id="confirmCheck" class="form-check-input">
+            <label class="form-check-label">I understand this is permanent</label>
+        </div>
+
+        <button type="submit" class="btn btn-glass danger w-100" id="deleteBtn" disabled>
+            Delete Permanently
+        </button>
+
+        <a href="{% url 'student_detail' student.id %}" class="btn btn-glass w-100 mt-2">
+            Cancel
+        </a>
+    </form>
+
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/core/delete_student.js' %}"></script>
+{% endblock %}

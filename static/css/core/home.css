@@ -1,0 +1,61 @@
+.hero {
+    padding: 120px 0;
+    color: white;
+}
+
+/* GLASS */
+.glass {
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(15px);
+    border-radius: 15px;
+    margin: 40px 0;
+}
+
+.glass-card {
+    padding: 20px;
+    border-radius: 15px;
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(20px);
+    transition: 0.3s;
+}
+
+.glass-card:hover {
+    transform: translateY(-10px);
+}
+
+/* HERO BUTTONS */
+.hero-buttons {
+    margin-top: 20px;
+}
+
+/* COURSE */
+.course-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+/* BUTTON */
+.btn-glass {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 10px 20px;
+    border-radius: 30px;
+    background: rgba(255,255,255,0.2);
+    color: white;
+    text-decoration: none;
+}
+
+.btn-glass.primary {
+    background: #0d6efd;
+}
+
+/* TESTIMONIAL */
+.testimonial-card {
+    text-align: center;
+}
+
+.stars {
+    margin: 10px 0;
+}

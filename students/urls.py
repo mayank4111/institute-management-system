@@ -5,7 +5,7 @@ app_name = 'students'
 
 urlpatterns = [
     # Admission
-    path('admission/', views.admission_form, name='admission_form'),
+    path('admission/', views.admission_form, name='admission'),  # ✅ FIXED
     path('admission-success/<str:enrollment_number>/', views.admission_success, name='admission_success'),
 
     # Student management
